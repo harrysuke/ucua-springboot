@@ -1,0 +1,65 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /ucua
+
+spring:
+  application:
+    name: ucua
+  datasource:
+    url: jdbc:sqlite:${SQLITE_PATH:./ucua.db}
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: com.ucua.ucua.config.UcuaSQLiteDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+      file-size-threshold: 2KB
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:change-this-ucua-mobile-secret-2026}
+  expiration-days: 7
+
+# File Upload Configuration
+storage:
+  upload-dir: ${UPLOAD_DIR:./uploads}
+  max-file-size: 8388608
+  allowed-extensions: jpg,jpeg,png,webp,gif
+
+# CORS Configuration
+cors:
+  allowed-origins: "*"
+  allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+  allowed-headers: Content-Type,Authorization,X-Requested-With
+
+# Logging
+logging:
+  level:
+    com.ucua.ucua: INFO
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management / Health
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
