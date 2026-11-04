@@ -33,6 +33,7 @@ class SecurityConfig(
                     .requestMatchers("/api/health").permitAll()
                     .requestMatchers("/actuator/health").permitAll()
                     .requestMatchers("/uploads/**").permitAll()
+                    .requestMatchers("/pages/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

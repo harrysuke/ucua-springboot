@@ -13,10 +13,6 @@ class UcuaSQLiteDialect : SQLiteDialect() {
         return SQLiteIdentityColumnSupport()
     }
 
-    override fun dropTemporaryTableAfterUse(): Boolean {
-        return false
-    }
-
     class SQLiteIdentityColumnSupport : IdentityColumnSupportImpl() {
         override fun supportsIdentityColumns(): Boolean = true
         override fun supportsInsertSelectIdentity(): Boolean = true

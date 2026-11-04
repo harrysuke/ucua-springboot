@@ -40,3 +40,6 @@ out/
 uploads/
 *.log
 .env
+
+### JTE (dev-mode runtime-compiled templates) ###
+jte-classes/

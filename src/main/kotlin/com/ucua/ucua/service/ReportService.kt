@@ -1,5 +1,6 @@
 package com.ucua.ucua.service
 
+import com.ucua.ucua.ai.ingestion.ReportIndexedEvent
 import com.ucua.ucua.dto.*
 import com.ucua.ucua.entity.History
 import com.ucua.ucua.entity.MobileReportHistory
@@ -26,11 +27,13 @@ class ReportService(
     private val historyRepository: HistoryRepository,
     private val mobileReportHistoryRepository: MobileReportHistoryRepository,
     private val userRepository: UserRepository,
+    private val eventPublisher: org.springframework.context.ApplicationEventPublisher,
     @Value("\${storage.upload-dir:./uploads}") private val uploadDir: String
 ) {
 
     companion object {
         const val STATUS_DRAFT = "Draft"
+        const val STATUS_REJECTED = "Rejected"
         const val STATUS_HSE = "Pending PSSD HSE Officer"
         const val STATUS_HOS = "Approved by PSSD HSE Officer"
         const val STATUS_HOD = "Approved by HOS"
@@ -158,6 +161,7 @@ class ReportService(
         val remark = if (isDraft) "Saved as draft" else "Submitted for PSSD HSE review"
         addReportHistory(saved.id!!, user.staffId.trim(), action, remark)
         logHistory(user.staffId.trim(), action, "${if (isDraft) "Saved draft" else "Created"} report ID ${saved.id} via mobile app", saved.id, httpRequest)
+        eventPublisher.publishEvent(ReportIndexedEvent(saved.id))
 
         return ReportResponse(created = true, id = saved.id, status = status)
     }
@@ -219,6 +223,7 @@ class ReportService(
         val remark = if (submit) "Submitted for review" else "Report details updated"
         addReportHistory(id, user.staffId.trim(), action, remark)
         logHistory(user.staffId.trim(), "EDIT", "Updated report ID $id via mobile app", id, httpRequest)
+        eventPublisher.publishEvent(ReportIndexedEvent(id))
 
         return ReportResponse(updated = true, id = id, status = newStatus)
     }

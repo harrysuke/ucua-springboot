@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "1.9.25"
+    id("gg.jte.gradle") version "3.2.5"
 }
 
 group = "com.ucua"
@@ -27,6 +28,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // JTE (Java/Kotlin Template Engine) - server-side HTML rendering
+    implementation("gg.jte:jte-spring-boot-starter-3:3.2.5")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -60,4 +64,31 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+// ---------------------------------------------------------------------------
+// JTE template precompilation (production)
+//
+// `precompile()` compiles all .jte templates to .class files in ./jte-classes
+// at build time, so the packaged WAR can run with the `prod` profile
+// (gg.jte.use-precompiled-templates=true) without a JDK at runtime.
+// Dev mode (`./gradlew bootRun`, default profile) still hot-reloads from src/main/jte.
+// ---------------------------------------------------------------------------
+jte {
+    precompile()
+}
+
+val jtePrecompiledClasses = fileTree("jte-classes") {
+    include("**/*.class")
+    include("**/*.bin") // only present if binaryStaticContent is enabled
+}
+
+tasks.named<org.gradle.api.tasks.bundling.War>("war") {
+    dependsOn("precompileJte")
+    from(jtePrecompiledClasses) { into("WEB-INF/classes") }
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootWar>("bootWar") {
+    dependsOn("precompileJte")
+    from(jtePrecompiledClasses) { into("WEB-INF/classes") }
 }

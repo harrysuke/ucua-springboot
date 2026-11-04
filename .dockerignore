@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Gradle
+.gradle
+build/
+gradlew
+gradlew.bat
+gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Application runtime data
+uploads/
+*.db
+*.log
+.env
+
+# CI/CD
+.github/
+Dockerfile
+.dockerignore
+docker-compose*.yml

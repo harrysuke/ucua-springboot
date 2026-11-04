@@ -40,6 +40,19 @@ storage:
   max-file-size: 8388608
   allowed-extensions: jpg,jpeg,png,webp,gif
 
+# AI / RAG Intelligence Layer
+ai:
+  enabled: true
+  provider: ollama
+  ollama:
+    base-url: ${OLLAMA_URL:http://localhost:11434}
+    embedding-model: nomic-embed-text
+    chat-model: llama3.1:8b
+  rag:
+    top-k: 5
+    similarity-threshold: 0.0
+    max-context-chars: 4000
+
 # CORS Configuration
 cors:
   allowed-origins: "*"
@@ -63,3 +76,13 @@ management:
   endpoint:
     health:
       show-details: always
+
+# JTE Template Engine (development defaults)
+# development-mode compiles .jte templates from the filesystem at runtime (hot reload).
+# For production, run with the `prod` profile (see application-prod.yml), which serves
+# precompiled templates produced by `./gradlew bootWar` (precompileJte task).
+gg.jte:
+  development-mode: true
+  template-location: src/main/jte
+  template-suffix: .jte
+  trim-control-structures: true

@@ -11,12 +11,12 @@ package com.ucua.ucua.dto
 )
 
  data class CountsDto(
-    val uc: Int = 0,
-    val ua: Int = 0,
-    val drafts: Int = 0,
-    val pending: Int = 0,
-    val closed: Int = 0,
-    val rejected: Int = 0
+    var uc: Int = 0,
+    var ua: Int = 0,
+    var drafts: Int = 0,
+    var pending: Int = 0,
+    var closed: Int = 0,
+    var rejected: Int = 0
 )
 
  data class QueuesDto(

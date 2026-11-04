@@ -1,0 +1,34 @@
+services:
+  ucua-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/harrysuke/ucua-springboot:latest
+    container_name: ucua-app
+    ports:
+      - "8080:8080"
+    environment:
+      # Override defaults for containerized environment
+      SQLITE_PATH: /data/db/ucua.db
+      UPLOAD_DIR: /data/uploads
+      JWT_SECRET: ${JWT_SECRET:rxhXgEUCLrUcZTE7GkNV9HUADpUw7fFcWd8HrJ+UEKI=}
+      # Spring profiles (optional)
+      # SPRING_PROFILES_ACTIVE: docker
+    volumes:
+      # Persist SQLite database
+      - ucua-db:/data/db
+      # Persist uploaded files
+      - ucua-uploads:/data/uploads
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/ucua/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  ucua-db:
+    driver: local
+  ucua-uploads:
+    driver: local

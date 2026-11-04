@@ -1,0 +1,7 @@
+# Production profile: render precompiled JTE templates.
+# Build with `./gradlew bootWar` (runs `precompileJte` and bundles the compiled
+# templates into WEB-INF/classes), then run with:
+#   java -jar build/libs/ucua-1.0.0.war --spring.profiles.active=prod
+gg.jte:
+  development-mode: false
+  use-precompiled-templates: true
