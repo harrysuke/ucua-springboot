@@ -5,7 +5,7 @@ plugins {
     war
     id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "1.9.25"
+    kotlin("jvm") version "2.0.21"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "1.9.25"
     id("gg.jte.gradle") version "3.2.5"
@@ -16,6 +16,10 @@ version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 repositories {

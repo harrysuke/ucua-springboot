@@ -34,6 +34,7 @@ class SecurityConfig(
                     .requestMatchers("/actuator/health").permitAll()
                     .requestMatchers("/uploads/**").permitAll()
                     .requestMatchers("/pages/**").permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
