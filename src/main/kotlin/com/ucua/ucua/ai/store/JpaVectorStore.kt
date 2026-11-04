@@ -37,6 +37,10 @@ class JpaVectorStore(private val repo: EmbeddingRepository) : VectorStore {
         repo.deleteBySourceTypeAndSourceRef(sourceType, sourceRef)
     }
 
+    override fun deleteByType(sourceType: String) {
+        repo.deleteBySourceType(sourceType)
+    }
+
     override fun query(vector: FloatArray, topK: Int, sourceType: String?): List<ScoredChunk> {
         val rows = if (sourceType != null) repo.findBySourceType(sourceType) else repo.findAll()
         val scored = rows.mapNotNull { e ->

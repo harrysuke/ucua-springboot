@@ -33,8 +33,19 @@ data class SimilarResponse(
 
 data class AskRequest(val question: String = "", val sourceType: String? = null)
 
-data class ReindexResponse(
+/**
+ * State of the background reindex job.
+ * state: IDLE | RUNNING | COMPLETED | FAILED
+ */
+data class ReindexStatus(
+    val state: String = "IDLE",
+    val startedAt: String? = null,
+    val finishedAt: String? = null,
+    val filesProcessed: Int = 0,
+    val filesTotal: Int = 0,
     val indexedOffences: Int = 0,
     val indexedReports: Int = 0,
-    val message: String? = null
+    val indexedDocuments: Int = 0,
+    val indexedChunks: Int = 0,
+    val error: String? = null
 )

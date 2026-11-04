@@ -52,6 +52,21 @@ ai:
     top-k: 5
     similarity-threshold: 0.0
     max-context-chars: 4000
+  corpus:
+    # Folder scanned by DocumentIndexer on POST /api/ai/reindex.
+    # Supported: .pdf .docx .xlsx .md .markdown .txt .text (UTF-8)
+    dir: ${RAG_CORPUS_DIR:./rag-docs}
+    chunk-size: 1200
+    chunk-overlap: 200
+    max-file-size-bytes: 20971520
+  ocr:
+    # Fallback OCR for PDFs with an empty text layer (scanned documents).
+    # Needs `eng.traineddata` (or your language) in tessdata-path.
+    enabled: ${OCR_ENABLED:true}
+    tessdata-path: ${TESSDATA_PATH:./tessdata}
+    language: ${OCR_LANGUAGE:eng}
+    dpi: 300
+    min-chars-per-page: 40
 
 # CORS Configuration
 cors:

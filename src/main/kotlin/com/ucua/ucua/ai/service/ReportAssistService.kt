@@ -2,7 +2,6 @@ package com.ucua.ucua.ai.service
 
 import com.ucua.ucua.ai.client.EmbeddingClient
 import com.ucua.ucua.ai.dto.*
-import com.ucua.ucua.ai.ingestion.CorpusIndexer
 import com.ucua.ucua.config.AiProperties
 import com.ucua.ucua.entity.UcuaForm
 import com.ucua.ucua.repository.OffenceRepository
@@ -17,7 +16,6 @@ class ReportAssistService(
     private val embeddingClient: EmbeddingClient,
     private val offenceRepository: OffenceRepository,
     private val ucuaFormRepository: UcuaFormRepository,
-    private val corpusIndexer: CorpusIndexer,
     private val props: AiProperties
 ) {
     private val executor = Executors.newCachedThreadPool()
@@ -87,17 +85,6 @@ class ReportAssistService(
             }
         }
         return emitter
-    }
-
-    /** Admin: rebuild the entire vector corpus. */
-    fun reindexAll(): ReindexResponse {
-        return try {
-            val o = corpusIndexer.indexAllOffences()
-            val r = corpusIndexer.indexAllReports()
-            ReindexResponse(indexedOffences = o, indexedReports = r, message = "Reindex complete")
-        } catch (e: Exception) {
-            ReindexResponse(message = "Reindex failed: ${e.message}")
-        }
     }
 
     private fun buildReportText(f: UcuaForm): String = listOf(

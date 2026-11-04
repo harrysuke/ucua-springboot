@@ -36,6 +36,13 @@ dependencies {
     // JTE (Java/Kotlin Template Engine) - server-side HTML rendering
     implementation("gg.jte:jte-spring-boot-starter-3:3.2.5")
 
+    // Document text extraction for RAG ingestion (PDF / DOCX / XLSX)
+    implementation("org.apache.pdfbox:pdfbox:3.0.3")
+    implementation("org.apache.poi:poi-ooxml:5.3.0")
+
+    // OCR fallback for scanned/image-only PDFs (Tesseract via JNA)
+    implementation("net.sourceforge.tess4j:tess4j:5.20.0")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")

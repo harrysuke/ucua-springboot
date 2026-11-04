@@ -12,6 +12,9 @@ data class ScoredChunk(
 interface VectorStore {
     fun upsert(sourceType: String, sourceId: Int, sourceRef: String, chunk: String, vector: FloatArray, model: String)
     fun delete(sourceType: String, sourceRef: String)
+
+    /** Remove every embedding of a given [sourceType] (used to rebuild the corpus). */
+    fun deleteByType(sourceType: String)
     fun query(vector: FloatArray, topK: Int, sourceType: String? = null): List<ScoredChunk>
     fun count(sourceType: String? = null): Long
 }
